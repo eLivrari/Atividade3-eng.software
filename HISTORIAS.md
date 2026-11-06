@@ -21,3 +21,26 @@ Critérios de aceitação:
 2. O total de cada mês é a soma das transações daquele mês, identificado como AAAA-MM.
 3. Categorias escritas com maiúscula ou minúscula diferente contam como a mesma, Mercado e mercado por exemplo.
 4. Com uma lista vazia de transações, os totais vêm vazios e o sistema não dá erro.
+
+## História 3: Ser avisado quando passar do limite
+
+Como usuário que define quanto pode gastar em cada categoria, quero ser avisado quando passar desse limite, para perceber antes que o gasto saia do controle.
+
+Critérios de aceitação:
+
+1. Uma categoria que gastou mais que o limite gera um alerta com o valor gasto, o limite e quanto passou.
+2. Uma categoria que gastou exatamente o limite não gera alerta.
+3. Uma categoria que não tem limite definido não gera alerta.
+4. Os alertas vêm ordenados do que mais passou do limite para o que menos passou.
+5. Um limite negativo é recusado com erro.
+
+## Sobre os testes
+
+Nesta sprint os testes falham de propósito, porque as funções em `analisador.py` ainda não foram implementadas. Eles servem de especificação para a Sprint 3.
+
+Para rodar:
+
+```
+pip install pytest
+pytest
+```
