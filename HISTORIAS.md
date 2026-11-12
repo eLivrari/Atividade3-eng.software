@@ -36,11 +36,25 @@ Critérios de aceitação:
 
 ## Sobre os testes
 
-Nesta sprint os testes falham de propósito, porque as funções em `analisador.py` ainda não foram implementadas. Eles servem de especificação para a Sprint 3.
+Os testes em `tests/` especificam os critérios de aceitação de cada história. As regras ficam em `analisador.py` e a interface de terminal em `main.py` (veja `ARQUITETURA.md`).
 
 Para rodar:
 
 ```
 pip install pytest
-pytest
+python3 -m pytest -v
+```
+
+Para rodar só a história 1:
+
+```
+python3 -m pytest tests/test_carregar_csv.py -v
+```
+
+## Demonstração no terminal
+
+```
+python3 main.py exemplos/extrato.csv                 # História 1: carrega e lista as transações
+python3 main.py exemplos/extrato_sem_coluna.csv      # História 1, critério 4: erro com a coluna que falta
+python3 main.py exemplos/extrato_valor_invalido.csv  # História 1, critério 5: erro com o número da linha
 ```
