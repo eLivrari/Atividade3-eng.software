@@ -1,6 +1,6 @@
 import sys
 
-from analisador import ler_csv
+from analisador import gastos_por_categoria, gastos_por_mes, ler_csv
 
 
 def main():
@@ -24,6 +24,16 @@ def main():
         print(f"{data}  {t['descricao']:<25} {t['categoria']:<15} R$ {t['valor']:.2f}")
 
     print(f"\n{len(transacoes)} transações carregadas")
+
+    totais_categoria = gastos_por_categoria(transacoes)
+    print("\nGastos por categoria:")
+    for categoria, total in totais_categoria.items():
+        print(f"  {categoria:<15} R$ {total:.2f}")
+
+    totais_mes = gastos_por_mes(transacoes)
+    print("\nGastos por mês:")
+    for mes, total in sorted(totais_mes.items()):
+        print(f"  {mes:<15} R$ {total:.2f}")
 
 
 main()
