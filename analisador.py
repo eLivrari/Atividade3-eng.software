@@ -61,3 +61,30 @@ def gastos_por_mes(transacoes):
         totais[mes] = totais.get(mes, 0.0) + transacao["valor"]
 
     return totais
+
+def verificar_limites(total, limites):
+    alertas = []
+
+    for categoria in limites:
+        if limites[categoria] < 0:
+            raise ValueError("Limite negativo não é permitido")
+
+    for categoria in total:
+        gasto = total[categoria]
+
+        if categoria not in limites:
+            continue
+
+        limite = limites[categoria]
+
+        if gasto > limite:
+            alerta = {
+                "categoria": categoria,"gasto": gasto,"limite": limite, "excedente" : gasto - limite,
+            }
+            alertas.append(alerta)
+    alertas.sort(key= pegar_excedente, reverse=True)
+
+    return alertas
+
+def pegar_excedente(alerta):
+    return alerta["excedente"]
