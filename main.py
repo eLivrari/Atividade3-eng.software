@@ -1,29 +1,36 @@
 import sys
 
-from analisador import ler_csv
+from analisador import ler_extrato
 
 
-def main():
-    if len(sys.argv) < 2:
+def formatar_transacao(t):
+    data = t["data"].strftime("%d/%m/%Y")
+    valor = f"{t['valor']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return f"{data}  {t['descricao']:<28} {t['categoria']:<14} R$ {valor:>10}"
+
+
+def main(argumentos):
+    if len(argumentos) < 2:
         print("Uso: python3 main.py arquivo.csv")
-        return
+        return 1
 
-    caminho = sys.argv[1]
+    caminho = argumentos[1]
 
     try:
-        transacoes = ler_csv(caminho)
+        transacoes = ler_extrato(caminho)
     except FileNotFoundError:
         print(f"Erro: o arquivo '{caminho}' não existe")
-        return
+        return 1
     except ValueError as erro:
         print(f"Erro: {erro}")
-        return
+        return 1
 
     for t in transacoes:
-        data = t["data"].strftime("%d/%m/%Y")
-        print(f"{data}  {t['descricao']:<25} {t['categoria']:<15} R$ {t['valor']:.2f}")
+        print(formatar_transacao(t))
 
     print(f"\n{len(transacoes)} transações carregadas")
+    return 0
 
 
-main()
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
