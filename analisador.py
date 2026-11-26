@@ -103,30 +103,64 @@ def ler_csv(caminho):
     return LeitorCSV().ler(caminho)
 
 
+class EstrategiaAgrupamento(ABC):
+    """Strategy: define como extrair a chave de agrupamento e o rótulo de exibição."""
+
+    @abstractmethod
+    def chave(self, transacao):
+        pass
+
+    def rotulo(self, transacao):
+        return self.chave(transacao)
+
+
+class AgrupamentoPorCategoria(EstrategiaAgrupamento):
+    """Agrupa transações por categoria ignorando diferenças de maiúsculas/minúsculas."""
+
+    def chave(self, transacao):
+        texto = transacao["categoria"].strip()
+        return (texto or "Sem categoria").lower()
+
+    def rotulo(self, transacao):
+        texto = transacao["categoria"].strip()
+        return texto or "Sem categoria"
+
+
+class AgrupamentoPorMes(EstrategiaAgrupamento):
+    """Agrupa transações pelo mês no formato AAAA-MM."""
+
+    def chave(self, transacao):
+        return transacao["data"].strftime("%Y-%m")
+
+
+class TotalizadorGastos:
+    """Context: soma os valores das transações usando uma EstrategiaAgrupamento."""
+
+    def __init__(self, estrategia):
+        self.estrategia = estrategia
+
+    def calcular(self, transacoes):
+        totais = {}
+        rotulos = {}
+
+        for transacao in transacoes:
+            chave = self.estrategia.chave(transacao)
+            if chave not in rotulos:
+                rotulos[chave] = self.estrategia.rotulo(transacao)
+                totais[rotulos[chave]] = 0.0
+
+            rotulo = rotulos[chave]
+            totais[rotulo] += transacao["valor"]
+
+        return totais
+
+
 def gastos_por_categoria(transacoes):
-    totais = {}
-    nomes_originais = {}
-
-    for transacao in transacoes:
-        chave = transacao["categoria"].strip().lower()
-        if chave not in nomes_originais:
-            nomes_originais[chave] = transacao["categoria"].strip()
-            totais[nomes_originais[chave]] = 0.0
-
-        nome_exibicao = nomes_originais[chave]
-        totais[nome_exibicao] += transacao["valor"]
-
-    return totais
+    return TotalizadorGastos(AgrupamentoPorCategoria()).calcular(transacoes)
 
 
 def gastos_por_mes(transacoes):
-    totais = {}
-
-    for transacao in transacoes:
-        mes = transacao["data"].strftime("%Y-%m")
-        totais[mes] = totais.get(mes, 0.0) + transacao["valor"]
-
-    return totais
+    return TotalizadorGastos(AgrupamentoPorMes()).calcular(transacoes)
 
 def verificar_limites(total, limites):
     alertas = []
