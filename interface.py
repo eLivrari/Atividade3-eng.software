@@ -1,3 +1,6 @@
+# Interface gráfica da história 1.
+# A leitura do extrato é feita pelo analisador.py.
+
 import sys
 import tkinter as tk
 from pathlib import Path
@@ -108,7 +111,7 @@ class Janela:
 
         self.filtro = ttk.Combobox(linha, state="readonly", width=24, values=[TODAS])
         self.filtro.set(TODAS)
-        self.filtro.bind("<<ComboboxSelected>>", lambda evento: self.atualizar())
+        self.filtro.bind("<<ComboboxSelected>>", lambda _: self.atualizar())
         self.filtro.pack(side="right")
         tk.Label(linha, text="Categoria:", bg=FUNDO, fg=CINZA,
                  font=(FONTE, 10)).pack(side="right", padx=(0, 8))
