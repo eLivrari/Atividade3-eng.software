@@ -1,0 +1,196 @@
+data,descricao,categoria,valor,forma_pagamento
+01/01/2026,Aluguel,Moradia,"1.200,00",Boleto
+01/01/2026,Rappi,Alimentação,"22,32",Cartão de crédito
+03/01/2026,Condomínio,Moradia,"320,00",Boleto
+03/01/2026,Lanche cantina,Alimentação,"24,75",Cartão de crédito
+03/01/2026,Posto Shell,Transporte,"56,31",Cartão de crédito
+03/01/2026,Rappi,Alimentação,"38,38",Pix
+04/01/2026,Burger King,Alimentação,"61,33",Cartão de crédito
+04/01/2026,Conta de luz Enel,Moradia,"161,15",Débito automático
+04/01/2026,Pão de Açúcar,Mercado,"146,38",Cartão de crédito
+05/01/2026,Mensalidade faculdade,Educação,"890,00",Boleto
+06/01/2026,Conta de água Sabesp,Moradia,"56,00",Débito automático
+06/01/2026,Steam,Lazer,"101,71",Cartão de crédito
+08/01/2026,Internet Vivo Fibra,Moradia,"99,90",Débito automático
+09/01/2026,Carrefour,Mercado,"100,29",Cartão de crédito
+09/01/2026,Droga Raia,Saúde,"176,72",Cartão de débito
+09/01/2026,Lanche cantina,Alimentação,"24,07",Cartão de crédito
+09/01/2026,Recarga BOM,Transporte,"116,24",Cartão de crédito
+10/01/2026,Plano de celular,Moradia,"49,99",Cartão de crédito
+12/01/2026,Spotify,Assinaturas,"21,90",Cartão de crédito
+15/01/2026,Netflix,Assinaturas,"44,90",Cartão de crédito
+18/01/2026,Show,Lazer,"57,58",Cartão de crédito
+19/01/2026,99,Transporte,"128,30",Pix
+19/01/2026,Padaria,Alimentação,"66,28",Pix
+20/01/2026,Academia Smart Fit,Saúde,"119,90",Cartão de crédito
+22/01/2026,99,Transporte,"140,29",Pix
+22/01/2026,Xerox,Educação,"77,43",Cartão de crédito
+23/01/2026,Cinema Cinemark,Lazer,"160,10",Pix
+23/01/2026,Rappi,Alimentação,"38,21",Cartão de débito
+24/01/2026,Recarga BOM,Transporte,"98,84",Cartão de crédito
+25/01/2026,Carrefour,Mercado,"235,48",Cartão de crédito
+28/01/2026,99,Transporte,"156,63",Cartão de crédito
+28/01/2026,Assaí Atacadista,Mercado,"209,04",Cartão de débito
+01/02/2026,Aluguel,Moradia,"1.200,00",Boleto
+01/02/2026,Bilhete único,Transporte,"175,08",Pix
+03/02/2026,Condomínio,Moradia,"320,00",Boleto
+04/02/2026,Bilhete único,Transporte,"81,08",Cartão de crédito
+04/02/2026,Conta de luz Enel,Moradia,"128,32",Débito automático
+05/02/2026,Mensalidade faculdade,Educação,"890,00",Boleto
+05/02/2026,Tênis Netshoes,Vestuário,"381,40",Cartão de crédito
+06/02/2026,Conta de água Sabesp,Moradia,"56,28",Débito automático
+08/02/2026,Internet Vivo Fibra,Moradia,"99,90",Débito automático
+10/02/2026,Plano de celular,Moradia,"49,99",Cartão de crédito
+11/02/2026,Restaurante universitário,Alimentação,"27,28",Pix
+12/02/2026,Lanche cantina,Alimentação,"79,81",Pix
+12/02/2026,Show,Lazer,"144,06",Pix
+12/02/2026,Spotify,Assinaturas,"21,90",Cartão de crédito
+12/02/2026,Steam,Lazer,"75,07",Pix
+13/02/2026,Dia Supermercado,Mercado,"318,91",Cartão de crédito
+15/02/2026,Lanche cantina,Alimentação,"27,07",Pix
+15/02/2026,Netflix,Assinaturas,"44,90",Cartão de crédito
+16/02/2026,Restaurante universitário,Alimentação,"71,70",Cartão de crédito
+17/02/2026,Hortifruti,Mercado,"65,45",Cartão de débito
+17/02/2026,Uber,Transporte,"157,34",Cartão de crédito
+18/02/2026,Uber,Transporte,"124,05",Pix
+19/02/2026,Burger King,Alimentação,"30,66",Cartão de crédito
+19/02/2026,Farmácia Drogasil,Saúde,"35,13",Pix
+19/02/2026,Restaurante universitário,Alimentação,"72,64",Cartão de débito
+20/02/2026,Academia Smart Fit,Saúde,"119,90",Cartão de crédito
+20/02/2026,Steam,Lazer,"132,38",Pix
+22/02/2026,Posto Shell,Transporte,"136,40",Cartão de crédito
+24/02/2026,Rappi,Alimentação,"46,81",Cartão de crédito
+26/02/2026,Hortifruti,Mercado,"206,99",Cartão de crédito
+27/02/2026,Livro Amazon,Educação,"88,24",Cartão de crédito
+27/02/2026,Posto Shell,Transporte,"111,57",Pix
+28/02/2026,Pão de Açúcar,Mercado,"82,80",Cartão de débito
+01/03/2026,Aluguel,Moradia,"1.200,00",Boleto
+03/03/2026,Condomínio,Moradia,"320,00",Boleto
+03/03/2026,Show,Lazer,"58,25",Cartão de crédito
+04/03/2026,Conta de luz Enel,Moradia,"131,20",Débito automático
+04/03/2026,Uber,Transporte,"120,32",Cartão de crédito
+05/03/2026,Mensalidade faculdade,Educação,"890,00",Boleto
+06/03/2026,Consulta dentista,Saúde,"15,51",Pix
+06/03/2026,Conta de água Sabesp,Moradia,"89,90",Débito automático
+08/03/2026,Internet Vivo Fibra,Moradia,"99,90",Débito automático
+09/03/2026,Hortifruti,Mercado,"99,99",Cartão de débito
+09/03/2026,Recarga BOM,Transporte,"48,72",Pix
+09/03/2026,Xerox,Educação,"32,82",Pix
+10/03/2026,Plano de celular,Moradia,"49,99",Cartão de crédito
+11/03/2026,iFood,Alimentação,"50,36",Pix
+12/03/2026,Spotify,Assinaturas,"21,90",Cartão de crédito
+14/03/2026,Lanche cantina,Alimentação,"74,88",Cartão de crédito
+14/03/2026,Recarga BOM,Transporte,"86,73",Pix
+15/03/2026,Ingresso jogo,Lazer,"42,52",Pix
+15/03/2026,Netflix,Assinaturas,"44,90",Cartão de crédito
+15/03/2026,iFood,Alimentação,"25,85",Pix
+16/03/2026,Show,Lazer,"218,87",Pix
+18/03/2026,Recarga BOM,Transporte,"29,53",Pix
+19/03/2026,Lanche cantina,Alimentação,"8,52",Cartão de crédito
+20/03/2026,Academia Smart Fit,Saúde,"119,90",Cartão de crédito
+21/03/2026,iFood,Alimentação,"24,48",Pix
+22/03/2026,Burger King,Alimentação,"34,89",Cartão de crédito
+22/03/2026,Uber,Transporte,"15,61",Cartão de crédito
+23/03/2026,Lanche cantina,Alimentação,"59,33",Cartão de débito
+24/03/2026,Dia Supermercado,Mercado,"201,34",Cartão de débito
+26/03/2026,Hortifruti,Mercado,"266,10",Cartão de débito
+26/03/2026,Uber,Transporte,"48,51",Pix
+28/03/2026,Assaí Atacadista,Mercado,"59,84",Cartão de débito
+01/04/2026,Aluguel,Moradia,"1.200,00",Boleto
+01/04/2026,Recarga BOM,Transporte,"113,70",Pix
+02/04/2026,Rappi,Alimentação,"60,97",Pix
+03/04/2026,Condomínio,Moradia,"320,00",Boleto
+03/04/2026,Posto Shell,Transporte,"42,30",Cartão de crédito
+04/04/2026,Conta de luz Enel,Moradia,"122,38",Débito automático
+05/04/2026,Bilhete único,Transporte,"159,15",Pix
+05/04/2026,Mensalidade faculdade,Educação,"890,00",Boleto
+06/04/2026,Conta de água Sabesp,Moradia,"66,87",Débito automático
+06/04/2026,iFood,Alimentação,"77,18",Pix
+07/04/2026,Steam,Lazer,"136,24",Cartão de crédito
+08/04/2026,Assaí Atacadista,Mercado,"150,82",Cartão de crédito
+08/04/2026,Internet Vivo Fibra,Moradia,"99,90",Débito automático
+09/04/2026,Carrefour,Mercado,"227,52",Cartão de crédito
+09/04/2026,Cinema Cinemark,Lazer,"224,63",Pix
+09/04/2026,Steam,Lazer,"159,11",Cartão de crédito
+10/04/2026,Plano de celular,Moradia,"49,99",Cartão de crédito
+12/04/2026,Bilhete único,Transporte,"32,61",Cartão de crédito
+12/04/2026,Spotify,Assinaturas,"21,90",Cartão de crédito
+15/04/2026,Assaí Atacadista,Mercado,"300,13",Cartão de débito
+15/04/2026,Netflix,Assinaturas,"44,90",Cartão de crédito
+16/04/2026,Rappi,Alimentação,"74,20",Cartão de crédito
+19/04/2026,Lanche cantina,Alimentação,"49,68",Pix
+20/04/2026,Academia Smart Fit,Saúde,"119,90",Cartão de crédito
+20/04/2026,Posto Shell,Transporte,"6,37",Cartão de crédito
+20/04/2026,Pão de Açúcar,Mercado,"157,38",Cartão de crédito
+22/04/2026,Açaí,Alimentação,"24,93",Pix
+22/04/2026,Uber,Transporte,"169,31",Pix
+24/04/2026,Padaria,Alimentação,"12,12",Cartão de crédito
+25/04/2026,Shein,Vestuário,"272,99",Cartão de crédito
+27/04/2026,Xerox,Educação,"13,53",Pix
+28/04/2026,Farmácia Drogasil,Saúde,"36,69",Pix
+28/04/2026,Lanche cantina,Alimentação,"12,93",Pix
+01/05/2026,Aluguel,Moradia,"1.200,00",Boleto
+01/05/2026,Cinema Cinemark,Lazer,"221,72",Cartão de crédito
+02/05/2026,Açaí,Alimentação,"34,58",Cartão de crédito
+02/05/2026,Cinema Cinemark,Lazer,"157,21",Cartão de crédito
+03/05/2026,Burger King,Alimentação,"73,08",Cartão de crédito
+03/05/2026,Condomínio,Moradia,"320,00",Boleto
+04/05/2026,Conta de luz Enel,Moradia,"122,93",Débito automático
+04/05/2026,Padaria,Alimentação,"64,17",Cartão de débito
+05/05/2026,Mensalidade faculdade,Educação,"890,00",Boleto
+05/05/2026,Restaurante universitário,Alimentação,"17,18",Cartão de débito
+06/05/2026,Conta de água Sabesp,Moradia,"72,67",Débito automático
+06/05/2026,Ingresso jogo,Lazer,"241,38",Cartão de crédito
+07/05/2026,Recarga BOM,Transporte,"66,19",Pix
+08/05/2026,Internet Vivo Fibra,Moradia,"99,90",Débito automático
+08/05/2026,Uber,Transporte,"120,51",Cartão de crédito
+09/05/2026,99,Transporte,"142,79",Pix
+10/05/2026,Plano de celular,Moradia,"49,99",Cartão de crédito
+11/05/2026,Bilhete único,Transporte,"156,26",Cartão de crédito
+12/05/2026,Açaí,Alimentação,"78,00",Pix
+12/05/2026,Lanche cantina,Alimentação,"57,11",Cartão de crédito
+12/05/2026,Posto Shell,Transporte,"74,94",Cartão de crédito
+12/05/2026,Spotify,Assinaturas,"21,90",Cartão de crédito
+13/05/2026,Curso Udemy,Educação,"25,21",Cartão de crédito
+13/05/2026,Uber,Transporte,"155,25",Pix
+14/05/2026,Pão de Açúcar,Mercado,"90,22",Cartão de crédito
+15/05/2026,Netflix,Assinaturas,"44,90",Cartão de crédito
+20/05/2026,Academia Smart Fit,Saúde,"119,90",Cartão de crédito
+20/05/2026,Carrefour,Mercado,"299,21",Cartão de débito
+23/05/2026,Restaurante universitário,Alimentação,"48,39",Pix
+24/05/2026,Consulta dentista,Saúde,"117,55",Cartão de débito
+26/05/2026,Hortifruti,Mercado,"264,63",Cartão de débito
+28/05/2026,Carrefour,Mercado,"313,34",Cartão de débito
+01/06/2026,Aluguel,Moradia,"1.200,00",Boleto
+02/06/2026,Droga Raia,Saúde,"73,56",Cartão de débito
+03/06/2026,99,Transporte,"122,74",Pix
+03/06/2026,Burger King,Alimentação,"74,30",Cartão de crédito
+03/06/2026,Condomínio,Moradia,"320,00",Boleto
+04/06/2026,Conta de luz Enel,Moradia,"166,70",Débito automático
+05/06/2026,Cinema Cinemark,Lazer,"225,31",Pix
+05/06/2026,Lanche cantina,Alimentação,"38,27",Cartão de débito
+05/06/2026,Mensalidade faculdade,Educação,"890,00",Boleto
+06/06/2026,Conta de água Sabesp,Moradia,"55,07",Débito automático
+08/06/2026,Internet Vivo Fibra,Moradia,"99,90",Débito automático
+08/06/2026,Recarga BOM,Transporte,"111,97",Pix
+10/06/2026,Carrefour,Mercado,"160,37",Cartão de crédito
+10/06/2026,Plano de celular,Moradia,"49,99",Cartão de crédito
+10/06/2026,Rappi,Alimentação,"30,27",Cartão de débito
+11/06/2026,Burger King,Alimentação,"69,06",Cartão de crédito
+11/06/2026,Restaurante universitário,Alimentação,"58,20",Cartão de crédito
+12/06/2026,Spotify,Assinaturas,"21,90",Cartão de crédito
+13/06/2026,Dia Supermercado,Mercado,"273,44",Cartão de crédito
+15/06/2026,Hortifruti,Mercado,"163,80",Cartão de débito
+15/06/2026,Livro Amazon,Educação,"74,11",Pix
+15/06/2026,Netflix,Assinaturas,"44,90",Cartão de crédito
+15/06/2026,Recarga BOM,Transporte,"160,07",Pix
+17/06/2026,Recarga BOM,Transporte,"143,90",Pix
+20/06/2026,Academia Smart Fit,Saúde,"119,90",Cartão de crédito
+22/06/2026,Carrefour,Mercado,"212,34",Cartão de crédito
+22/06/2026,Uber,Transporte,"54,66",Cartão de crédito
+23/06/2026,Bar com amigos,Lazer,"133,71",Pix
+24/06/2026,Burger King,Alimentação,"22,19",Cartão de débito
+25/06/2026,Bar com amigos,Lazer,"70,33",Cartão de crédito
+25/06/2026,Tênis Netshoes,Vestuário,"264,43",Cartão de crédito
+26/06/2026,99,Transporte,"30,79",Pix
+26/06/2026,Rappi,Alimentação,"57,45",Cartão de crédito
