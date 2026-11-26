@@ -55,6 +55,7 @@ python3 -m pytest tests/test_carregar_csv.py -v
 
 ```
 python3 main.py exemplos/extrato.csv                 # História 1: carrega e lista as transações
+python3 main.py exemplos/extrato_completo.csv        # História 1: extrato de 6 meses (195 transações, coluna extra ignorada)
 python3 main.py exemplos/extrato_sem_coluna.csv      # História 1, critério 4: erro com a coluna que falta
 python3 main.py exemplos/extrato_valor_invalido.csv  # História 1, critério 5: erro com o número da linha
 ```
