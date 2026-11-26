@@ -101,26 +101,6 @@ def ler_extrato(caminho):
 
 def ler_csv(caminho):
     return LeitorCSV().ler(caminho)
-    with open(caminho, encoding="utf-8") as arquivo:
-        leitor = csv.DictReader(arquivo)
-
-        for coluna in COLUNAS:
-            if coluna not in leitor.fieldnames:
-                raise ValueError(f"Está faltando a coluna '{coluna}' no arquivo")
-
-        transacoes = []
-        numero_linha = 1  # a linha 1 é o cabeçalho
-        for linha in leitor:
-            numero_linha += 1
-            transacao = {
-                "data": datetime.strptime(linha["data"], "%d/%m/%Y").date(),
-                "descricao": linha["descricao"],
-                "categoria": linha["categoria"],
-                "valor": converter_valor(linha["valor"], numero_linha),
-            }
-            transacoes.append(transacao)
-
-    return transacoes
 
 
 def gastos_por_categoria(transacoes):
