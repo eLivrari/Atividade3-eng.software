@@ -244,7 +244,14 @@ pre {{ font-family: "DejaVu Sans Mono", monospace; font-size: 8.3pt; background:
 <p class="leg">Figura 3: diagrama de sequência ao abrir um extrato. Seta cheia é chamada, tracejada é retorno.</p>
 
 <h2 class="pb">6. Interface gráfica</h2>
-<p>Além do terminal, a história 1 agora tem uma janela feita com tkinter (<code>interface.py</code>). O botão <b>Abrir extrato...</b> abre a seleção de arquivo, as transações aparecem numa tabela (data, descrição, categoria e valor) e embaixo aparecem a quantidade de transações e o total. Se o arquivo tiver problema, a mesma mensagem do terminal aparece numa caixa de erro. A janela usa a mesma função <code>ler_extrato</code> do <code>main.py</code>, então nenhuma regra foi duplicada.</p>
+<p>Além do terminal, a história 1 agora tem uma janela feita com tkinter (<code>interface.py</code>). Ela tem:</p>
+<ul>
+<li>o botão <b>Abrir extrato...</b>, que abre a seleção de arquivo;</li>
+<li>quatro cards de resumo: quantidade de transações, total gasto (com a média), período do extrato e maior gasto;</li>
+<li>a tabela com data, descrição, categoria e valor, com linhas alternando de cor;</li>
+<li>um filtro por categoria, que atualiza a tabela e os cards.</li>
+</ul>
+<p>Se o arquivo tiver problema, a mesma mensagem do terminal aparece numa caixa de erro (ex.: <i>Linha 3: valor inválido 'abc'</i>). A janela usa a mesma função <code>ler_extrato</code> do <code>main.py</code>, então as regras não foram duplicadas.</p>
 {PRINT_INTERFACE}
 
 <h2>7. Testes e exemplos</h2>
