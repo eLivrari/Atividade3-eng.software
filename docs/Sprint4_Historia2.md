@@ -1,167 +1,82 @@
-# Sprint 4 — Refatoração e Padrões de Projeto (História 2)
+# Sprint 4 - História 2 (Guilherme Rozzi)
 
-**Responsável:** Guilherme Rozzi (`gdicati`)  
-**História:** História 2 — Ver quanto gastei por categoria e por mês  
-**Módulos envolvidos:** `analisador.py` (regras de negócio) e `tests/test_totais.py` (testes automatizados)
+## O que foi refatorado
 
----
+Na Sprint 3 (commit `fbc098e`), as funções `gastos_por_categoria` e `gastos_por_mes` em `analisador.py` funcionavam e passavam nos testes, mas repetiam o mesmo `for transacao in transacoes` para somar os valores. Além disso, `gastos_por_categoria` misturava a soma com a limpeza de texto das categorias, e `main.py` precisava ordenar os meses na mão porque o dicionário vinha sem ordem fixa.
 
-## 1. Evidências de Refatoramento (em vez de reescrita completa)
+| Antes (Sprint 3) | Depois (Sprint 4) |
+|---|---|
+| Dois laços de soma repetidos em `gastos_por_categoria` e `gastos_por_mes` | Um único laço em `TotalizadorGastos.calcular`, variando só a estratégia |
+| Normalização de categoria misturada com o acúmulo | Regra isolada em `AgrupamentoPorCategoria` (com fallback para `"Sem categoria"`) |
+| Meses sem ordenação garantida | `TotalizadorOrdenado` ordena os meses cronologicamente e as categorias por maior gasto |
+| Soma direta sujeita a ruído de `float` | `TotalizadorGastos` arredonda os totais para 2 casas decimais |
 
-Na Sprint 3 (commit `fbc098e`), a História 2 foi entregue com duas funções procedurais independentes em `analisador.py`: `gastos_por_categoria(transacoes)` e `gastos_por_mes(transacoes)`. Embora atendessem aos critérios iniciais, o código apresentava problemas estruturais:
+As assinaturas de `gastos_por_categoria(transacoes)` e `gastos_por_mes(transacoes)` continuam iguais, então `main.py`, os testes originais de `tests/test_totais.py` e `verificar_limites` (História 3) não precisaram mudar.
 
-| Aspecto | Antes (Sprint 3 — `fbc098e`) | Depois (Sprint 4 — `c41a026` e `14f164f`) |
-|---|---|---|
-| Laço de agregação | Duplicado em `gastos_por_categoria` e `gastos_por_mes` | Unificado em `TotalizadorGastos.calcular`, variando apenas a `EstrategiaAgrupamento` |
-| Normalização de categorias | Misturada ao laço de soma (`nomes_originais` dentro de `gastos_por_categoria`) | Isolada em `AgrupamentoPorCategoria` (com tratamento para espaços extras e categoria vazia) |
-| Precisão de ponto flutuante | Soma direta em `float`, sujeita a ruído binário (ex.: `0.1 + 0.2`) | Arredondamento composicional via `TotalizadorArredondado` |
-| Ordenação dos resultados | Sem ordenação garantida (exigia ordenação manual em `main.py`) | Ordenação configurável via `TotalizadorOrdenado` (cronológica por mês e decrescente por valor em categorias) |
-| Compatibilidade externa | Funções `gastos_por_categoria` e `gastos_por_mes` | Assinaturas, tipos de retorno (`dict[str, float]`) e chamadas em `main.py` e `tests/test_totais.py` **100% preservados** via `FachadaTotais` |
+## Padrões de projeto aplicados na História 2
 
-### Histórico incremental no Git
+Junto com o Template Method e a Factory que já estavam na História 1 (`LeitorExtrato` e `criar_leitor`), o projeto fecha 4 padrões ao todo com os 2 aplicados aqui:
 
-A refatoração foi aplicada de forma incremental sobre o código existente, preservando os 4 testes originais de `tests/test_totais.py` e os demais módulos do projeto:
+### 1. Strategy (`EstrategiaAgrupamento`)
 
-1. **`c41a026` — `historia 2: extrai Strategy de agrupamento para eliminar duplicacao nos totais`**  
-   Extração de `EstrategiaAgrupamento`, `AgrupamentoPorCategoria`, `AgrupamentoPorMes` e `TotalizadorGastos` a partir do código original de `gastos_por_categoria` e `gastos_por_mes`, mantendo os 14 testes existentes passando.
-2. **`14f164f` — `historia 2: aplica Decorator e Facade no totalizador e amplia testes`**  
-   Introdução da interface `CalculadorTotais`, dos decorators `TotalizadorDecorator`, `TotalizadorArredondado` e `TotalizadorOrdenado`, e da fachada `FachadaTotais`, além da ampliação de `tests/test_totais.py` (19 testes passando).
-
----
-
-## 2. Padrões de Projeto Aplicados e Justificativas
-
-### Padrão 1: Strategy (Comportamental)
-
-- **Classes reais (`analisador.py`):** `EstrategiaAgrupamento` (abstrata), `AgrupamentoPorCategoria`, `AgrupamentoPorMes` e `TotalizadorGastos` (contexto).
-- **Justificativa da escolha:**  
-  No código original, `gastos_por_categoria` e `gastos_por_mes` repetiam exatamente a mesma estrutura de iteração e acumulação sobre `transacoes`, mudando apenas a forma de extrair a chave de agrupamento e o rótulo de exibição (categoria *case-insensitive* preservando a primeira grafia vs. mês `AAAA-MM`). O padrão **Strategy** elimina essa duplicação ao encapsular cada critério de agrupamento em uma subclasse de `EstrategiaAgrupamento`. Assim, novos agrupamentos (por exemplo, por ano ou por forma de pagamento) podem ser adicionados criando uma nova estratégia sem modificar `TotalizadorGastos` (Princípio Aberto/Fechado).
+As duas funções faziam o mesmo cálculo de soma e só mudavam na forma de escolher a chave e o nome exibido de cada grupo. Separar isso em `EstrategiaAgrupamento` (`AgrupamentoPorCategoria` e `AgrupamentoPorMes`) tira a duplicação de `TotalizadorGastos` e permite criar outro tipo de agrupamento (como por ano) sem mexer no código que soma.
 
 ```mermaid
 classDiagram
     class TotalizadorGastos {
-        +estrategia: EstrategiaAgrupamento
-        +calcular(transacoes) dict
+        +estrategia
+        +calcular(transacoes)
     }
-
     class EstrategiaAgrupamento {
         <<abstract>>
-        +chave(transacao)* str
-        +rotulo(transacao) str
+        +chave(transacao)
+        +rotulo(transacao)
     }
-
     class AgrupamentoPorCategoria {
-        +chave(transacao) str
-        +rotulo(transacao) str
+        +chave(transacao)
+        +rotulo(transacao)
     }
-
     class AgrupamentoPorMes {
-        +chave(transacao) str
+        +chave(transacao)
     }
 
-    TotalizadorGastos o--> EstrategiaAgrupamento : usa
+    TotalizadorGastos --> EstrategiaAgrupamento
     EstrategiaAgrupamento <|-- AgrupamentoPorCategoria
     EstrategiaAgrupamento <|-- AgrupamentoPorMes
 ```
 
----
+### 2. Decorator (`TotalizadorOrdenado`)
 
-### Padrão 2: Decorator (Estrutural)
-
-- **Classes reais (`analisador.py`):** `CalculadorTotais` (Component), `TotalizadorGastos` (ConcreteComponent), `TotalizadorDecorator` (Decorator), `TotalizadorArredondado` e `TotalizadorOrdenado` (ConcreteDecorators).
-- **Justificativa da escolha:**  
-  Além de somar os valores, a totalização financeira precisa lidar com pós-processamentos opcionais e combináveis: arredondar valores `float` para 2 casas decimais e ordenar os resultados (por mês em ordem cronológica ou por categoria do maior gasto para o menor). Colocar essas opções como flags dentro de `TotalizadorGastos` violaria o Princípio da Responsabilidade Única, e criar subclasses para cada combinação (`TotalizadorMesOrdenadoArredondado`, etc.) geraria explosão de classes. O padrão **Decorator** permite empilhar comportamentos (`TotalizadorOrdenado(TotalizadorArredondado(TotalizadorGastos(...)))`) de forma flexível mantendo a mesma interface `CalculadorTotais`.
+Para ordenar os totais (meses em ordem crescente e categorias do maior gasto para o menor) sem encher `TotalizadorGastos` de parâmetros ou criar subclasses diferentes para cada combinação, `TotalizadorOrdenado` implementa a mesma interface `Totalizador` e envolve outro `Totalizador` para ordenar o resultado retornado.
 
 ```mermaid
 classDiagram
-    class CalculadorTotais {
+    class Totalizador {
         <<abstract>>
-        +calcular(transacoes)* dict
+        +calcular(transacoes)
     }
-
     class TotalizadorGastos {
-        +estrategia: EstrategiaAgrupamento
-        +calcular(transacoes) dict
+        +estrategia
+        +calcular(transacoes)
     }
-
-    class TotalizadorDecorator {
-        #_calculador: CalculadorTotais
-        +calcular(transacoes) dict
-    }
-
-    class TotalizadorArredondado {
-        +casas: int
-        +calcular(transacoes) dict
-    }
-
     class TotalizadorOrdenado {
-        +por_valor: bool
-        +reverso: bool
-        +calcular(transacoes) dict
+        +totalizador
+        +por_valor
+        +reverso
+        +calcular(transacoes)
+    }
+    class main_e_testes {
+        <<main.py / tests/test_totais.py>>
+        gastos_por_categoria(transacoes)
+        gastos_por_mes(transacoes)
     }
 
-    CalculadorTotais <|-- TotalizadorGastos
-    CalculadorTotais <|-- TotalizadorDecorator
-    TotalizadorDecorator o--> CalculadorTotais : envolve
-    TotalizadorDecorator <|-- TotalizadorArredondado
-    TotalizadorDecorator <|-- TotalizadorOrdenado
+    Totalizador <|-- TotalizadorGastos
+    Totalizador <|-- TotalizadorOrdenado
+    TotalizadorOrdenado --> Totalizador
+    main_e_testes ..> TotalizadorOrdenado : chama via analisador.py
 ```
 
----
+## Testes
 
-### Padrão 3: Facade (Estrutural)
-
-- **Classes e funções reais:** `FachadaTotais`, `gastos_por_categoria(transacoes)` e `gastos_por_mes(transacoes)` em `analisador.py`, consumidos por `main.py` e `tests/test_totais.py`.
-- **Justificativa da escolha:**  
-  Com a introdução das estratégias e dos decorators, montar um totalizador completo exige instanciar e encadear vários objetos (`AgrupamentoPorCategoria`, `TotalizadorGastos`, `TotalizadorArredondado`, `TotalizadorOrdenado`). Expor essa complexidade diretamente para `main.py` ou para os testes acoplaria os clientes à estrutura interna da refatoração. A `FachadaTotais` (e as funções de fachada `gastos_por_categoria` e `gastos_por_mes` em `analisador.py`) fornece uma interface única e simples (`por_categoria`, `por_mes`, `resumo_completo`), preservando a compatibilidade com `main.py`, com a História 3 (`verificar_limites`) e com os testes preexistentes.
-
-```mermaid
-classDiagram
-    class main_py["Módulo main.py"] {
-        +main(argumentos)
-    }
-
-    class test_totais_py["Módulo tests/test_totais.py"] {
-        +test_total_por_categoria()
-        +test_total_por_mes()
-        +test_fachada_resumo_completo()
-    }
-
-    class analisador_facade["Módulo analisador.py (Facade)"] {
-        +gastos_por_categoria(transacoes) dict
-        +gastos_por_mes(transacoes) dict
-    }
-
-    class FachadaTotais {
-        -_por_categoria: CalculadorTotais
-        -_por_mes: CalculadorTotais
-        +por_categoria(transacoes) dict
-        +por_mes(transacoes) dict
-        +resumo_completo(transacoes) dict
-    }
-
-    class SubsistemaTotalizador["Subsistema em analisador.py"] {
-        <<Strategy + Decorator>>
-        TotalizadorGastos
-        AgrupamentoPorCategoria
-        AgrupamentoPorMes
-        TotalizadorArredondado
-        TotalizadorOrdenado
-    }
-
-    main_py ..> analisador_facade : chama
-    test_totais_py ..> analisador_facade : testa
-    test_totais_py ..> FachadaTotais : testa
-    analisador_facade ..> FachadaTotais : delega
-    FachadaTotais --> SubsistemaTotalizador : compõe e orquestra
-```
-
----
-
-## 3. Verificação dos Testes Automatizados
-
-Após todas as refatorações, a suíte completa do projeto executada com `python -m pytest -v` obteve **19 testes aprovados (0 falhas)**:
-
-- `tests/test_carregar_csv.py`: 5 testes (História 1 — inalterada)
-- `tests/test_limites.py`: 5 testes (História 3 — inalterada)
-- `tests/test_totais.py`: 9 testes (4 critérios originais da História 2 + 5 testes cobrindo Strategy, Decorator, Facade e casos de borda)
+Rodando `python3 -m pytest -v`, todos os 17 testes passam (os 5 da História 1, os 5 da História 3 e os 7 da História 2 em `tests/test_totais.py`, mantendo os 4 testes originais intactos).

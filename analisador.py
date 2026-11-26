@@ -103,16 +103,8 @@ def ler_csv(caminho):
     return LeitorCSV().ler(caminho)
 
 
-class CalculadorTotais(ABC):
-    """Component: interface comum para totalizadores e decorators."""
-
-    @abstractmethod
-    def calcular(self, transacoes):
-        pass
-
-
+# Strategy: cada criterio define como agrupar as transacoes
 class EstrategiaAgrupamento(ABC):
-    """Strategy: define como extrair a chave de agrupamento e o rótulo de exibição."""
 
     @abstractmethod
     def chave(self, transacao):
@@ -123,7 +115,6 @@ class EstrategiaAgrupamento(ABC):
 
 
 class AgrupamentoPorCategoria(EstrategiaAgrupamento):
-    """Agrupa transações por categoria ignorando diferenças de maiúsculas/minúsculas."""
 
     def chave(self, transacao):
         texto = transacao["categoria"].strip()
@@ -135,14 +126,19 @@ class AgrupamentoPorCategoria(EstrategiaAgrupamento):
 
 
 class AgrupamentoPorMes(EstrategiaAgrupamento):
-    """Agrupa transações pelo mês no formato AAAA-MM."""
 
     def chave(self, transacao):
         return transacao["data"].strftime("%Y-%m")
 
 
-class TotalizadorGastos(CalculadorTotais):
-    """Context / ConcreteComponent: soma valores usando uma EstrategiaAgrupamento."""
+class Totalizador(ABC):
+
+    @abstractmethod
+    def calcular(self, transacoes):
+        pass
+
+
+class TotalizadorGastos(Totalizador):
 
     def __init__(self, estrategia):
         self.estrategia = estrategia
@@ -160,85 +156,35 @@ class TotalizadorGastos(CalculadorTotais):
             rotulo = rotulos[chave]
             totais[rotulo] += transacao["valor"]
 
-        return totais
+        return {nome: round(valor, 2) for nome, valor in totais.items()}
 
 
-class TotalizadorDecorator(CalculadorTotais):
-    """Decorator base: encapsula um CalculadorTotais para adicionar pós-processamento."""
+# Decorator: ordena o resultado sem precisar mexer no TotalizadorGastos
+class TotalizadorOrdenado(Totalizador):
 
-    def __init__(self, calculador):
-        self._calculador = calculador
-
-    def calcular(self, transacoes):
-        return self._calculador.calcular(transacoes)
-
-
-class TotalizadorArredondado(TotalizadorDecorator):
-    """Decorator que arredonda os totais para evitar imprecisão de ponto flutuante."""
-
-    def __init__(self, calculador, casas=2):
-        super().__init__(calculador)
-        self.casas = casas
-
-    def calcular(self, transacoes):
-        totais = super().calcular(transacoes)
-        return {chave: round(valor, self.casas) for chave, valor in totais.items()}
-
-
-class TotalizadorOrdenado(TotalizadorDecorator):
-    """Decorator que ordena os totais por chave ou por valor."""
-
-    def __init__(self, calculador, por_valor=False, reverso=False):
-        super().__init__(calculador)
+    def __init__(self, totalizador, por_valor=False, reverso=False):
+        self.totalizador = totalizador
         self.por_valor = por_valor
         self.reverso = reverso
 
     def calcular(self, transacoes):
-        totais = super().calcular(transacoes)
+        totais = self.totalizador.calcular(transacoes)
         criterio = (lambda item: item[1]) if self.por_valor else (lambda item: item[0])
         return dict(sorted(totais.items(), key=criterio, reverse=self.reverso))
 
 
-class FachadaTotais:
-    """Facade: simplifica o uso de estratégias, totalizador e decorators."""
-
-    def __init__(self):
-        self._por_categoria = TotalizadorOrdenado(
-            TotalizadorArredondado(TotalizadorGastos(AgrupamentoPorCategoria())),
-            por_valor=True,
-            reverso=True,
-        )
-        self._por_mes = TotalizadorOrdenado(
-            TotalizadorArredondado(TotalizadorGastos(AgrupamentoPorMes())),
-            por_valor=False,
-            reverso=False,
-        )
-
-    def por_categoria(self, transacoes):
-        return self._por_categoria.calcular(transacoes)
-
-    def por_mes(self, transacoes):
-        return self._por_mes.calcular(transacoes)
-
-    def resumo_completo(self, transacoes):
-        categorias = self.por_categoria(transacoes)
-        meses = self.por_mes(transacoes)
-        return {
-            "por_categoria": categorias,
-            "por_mes": meses,
-            "total_geral": round(sum(categorias.values()), 2),
-        }
-
-
-_fachada_totais = FachadaTotais()
-
-
 def gastos_por_categoria(transacoes):
-    return _fachada_totais.por_categoria(transacoes)
+    calc = TotalizadorOrdenado(
+        TotalizadorGastos(AgrupamentoPorCategoria()),
+        por_valor=True,
+        reverso=True,
+    )
+    return calc.calcular(transacoes)
 
 
 def gastos_por_mes(transacoes):
-    return _fachada_totais.por_mes(transacoes)
+    calc = TotalizadorOrdenado(TotalizadorGastos(AgrupamentoPorMes()))
+    return calc.calcular(transacoes)
 
 def verificar_limites(total, limites):
     alertas = []
