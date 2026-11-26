@@ -3,7 +3,17 @@ from datetime import date
 
 import pytest
 
-from analisador import gastos_por_categoria, gastos_por_mes
+from analisador import (
+    AgrupamentoPorCategoria,
+    AgrupamentoPorMes,
+    EstrategiaAgrupamento,
+    FachadaTotais,
+    TotalizadorArredondado,
+    TotalizadorGastos,
+    TotalizadorOrdenado,
+    gastos_por_categoria,
+    gastos_por_mes,
+)
 
 
 def t(dia, categoria, valor):
@@ -50,3 +60,70 @@ def test_categoria_ignora_maiuscula():
 def test_lista_vazia():
     assert gastos_por_categoria([]) == {}
     assert gastos_por_mes([]) == {}
+
+
+# --- Testes da refatoração (Sprint 4): Strategy, Decorator e Facade ---
+
+
+def test_categoria_com_espacos_e_vazia():
+    transacoes = [
+        t(date(2026, 3, 5), "  Mercado  ", 10.0),
+        t(date(2026, 3, 6), "mercado", 5.0),
+        t(date(2026, 3, 7), "   ", 12.0),
+    ]
+
+    totais = gastos_por_categoria(transacoes)
+
+    assert totais == {"Sem categoria": 12.0, "Mercado": 15.0}
+
+
+def test_strategy_personalizada():
+    class AgrupamentoPorAno(EstrategiaAgrupamento):
+        def chave(self, transacao):
+            return str(transacao["data"].year)
+
+    transacoes = [
+        t(date(2025, 12, 30), "Lazer", 50.0),
+        t(date(2026, 1, 10), "Mercado", 100.0),
+    ]
+
+    totais = TotalizadorGastos(AgrupamentoPorAno()).calcular(transacoes)
+
+    assert totais == {"2025": 50.0, "2026": 100.0}
+
+
+def test_decorator_arredondamento_e_ordenacao():
+    transacoes = [
+        t(date(2026, 4, 2), "Lazer", 0.1),
+        t(date(2026, 3, 1), "Mercado", 100.0),
+        t(date(2026, 4, 5), "Lazer", 0.2),
+    ]
+
+    calculador = TotalizadorOrdenado(
+        TotalizadorArredondado(TotalizadorGastos(AgrupamentoPorMes())),
+        por_valor=False,
+        reverso=False,
+    )
+    totais = calculador.calcular(transacoes)
+
+    assert list(totais.items()) == [("2026-03", 100.0), ("2026-04", 0.3)]
+
+
+def test_decorator_ordena_categorias_por_maior_gasto():
+    totais = gastos_por_categoria(TRANSACOES)
+
+    assert list(totais.keys()) == ["Mercado", "Lazer"]
+
+
+def test_fachada_resumo_completo():
+    fachada = FachadaTotais()
+    resumo = fachada.resumo_completo(TRANSACOES)
+
+    assert resumo["por_categoria"] == {"Mercado": 185.5, "Lazer": 30.0}
+    assert resumo["por_mes"] == {"2026-03": 155.5, "2026-04": 60.0}
+    assert resumo["total_geral"] == 215.5
+    assert fachada.resumo_completo([]) == {
+        "por_categoria": {},
+        "por_mes": {},
+        "total_geral": 0.0,
+    }
