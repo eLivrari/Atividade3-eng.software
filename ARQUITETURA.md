@@ -39,7 +39,7 @@ flowchart LR
 
 | Componente | Onde | Responsabilidade | História |
 |---|---|---|---|
-| CLI e interface gráfica | `main.py`, `interface.py` | Recebe o caminho do CSV pela linha de comando, chama as regras na ordem certa, mostra o resultado formatado e transforma erros (`ValueError`, arquivo inexistente) em mensagens amigáveis | todas |
+| CLI | `main.py` | Recebe o caminho do CSV pela linha de comando, chama as regras na ordem certa, mostra o resultado formatado e transforma erros (`ValueError`, arquivo inexistente) em mensagens amigáveis | todas |
 | Leitor de extrato | `analisador.ler_extrato`, `analisador.ler_csv`, `LeitorExtrato`, `LeitorCSV`, `criar_leitor` | Confere se as colunas `data`, `descricao`, `categoria` e `valor` existem, converte a data DD/MM/AAAA para `date` e o valor (com vírgula, ponto de milhar ou `R$`) para `float`. Aceita `,` ou `;` como separador. Os erros informam a coluna que falta ou a linha com problema | 1 |
 | Totalizador | `analisador.gastos_por_categoria`, `analisador.gastos_por_mes` | Soma os valores por categoria (sem diferenciar maiúsculas de minúsculas) e por mês (`AAAA-MM`) | 2 |
 | Verificador de limites | `analisador.verificar_limites` | Compara os totais por categoria com os limites do usuário e gera alertas ordenados pelo excedente. Recusa limite negativo | 3 |
@@ -75,5 +75,3 @@ classDiagram
 
 - **Template Method** (`LeitorExtrato.ler`): os passos da leitura são sempre os mesmos (abrir, validar colunas, converter as linhas). O `LeitorCSV` só implementa `extrair_linhas`.
 - **Factory** (`criar_leitor`): escolhe o leitor pela extensão do arquivo usando o dicionário `LEITORES`. Se um dia formos ler OFX, é só criar um `LeitorOFX` e colocar no dicionário.
-
-A interface gráfica (`interface.py`, tkinter) e a de terminal (`main.py`) chamam a mesma função `ler_extrato`.
