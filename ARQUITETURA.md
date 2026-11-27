@@ -75,3 +75,7 @@ classDiagram
 
 - **Template Method** (`LeitorExtrato.ler`): os passos da leitura são sempre os mesmos (abrir, validar colunas, converter as linhas). O `LeitorCSV` só implementa `extrair_linhas`.
 - **Factory** (`criar_leitor`): escolhe o leitor pela extensão do arquivo usando o dicionário `LEITORES`. Se um dia formos ler OFX, é só criar um `LeitorOFX` e colocar no dicionário.
+
+## Refatoração na História 3 (Sprint 4)
+A função verificar_limites fazia tudo sozinha: validava os limites, montava o alerta e ordenava. A refatoração foi por extração de funções, sem mudar o comportamento, e os testes continuaram passando. Nenhum padrão de projeto foi aplicado nesta história.
+
