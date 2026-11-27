@@ -76,6 +76,55 @@ classDiagram
 - **Template Method** (`LeitorExtrato.ler`): os passos da leitura são sempre os mesmos (abrir, validar colunas, converter as linhas). O `LeitorCSV` só implementa `extrair_linhas`.
 - **Factory** (`criar_leitor`): escolhe o leitor pela extensão do arquivo usando o dicionário `LEITORES`. Se um dia formos ler OFX, é só criar um `LeitorOFX` e colocar no dicionário.
 
+## Padrões de projeto na História 2 (Sprint 4)
+
+```mermaid
+classDiagram
+    class EstrategiaAgrupamento {
+        <<abstract>>
+        +chave(transacao)
+        +rotulo(transacao)
+    }
+    class AgrupamentoPorCategoria {
+        +chave(transacao)
+        +rotulo(transacao)
+    }
+    class AgrupamentoPorMes {
+        +chave(transacao)
+    }
+    class TotalizadorGastos {
+        +estrategia
+        +calcular(transacoes)
+    }
+    EstrategiaAgrupamento <|-- AgrupamentoPorCategoria
+    EstrategiaAgrupamento <|-- AgrupamentoPorMes
+    TotalizadorGastos --> EstrategiaAgrupamento
+```
+
+```mermaid
+classDiagram
+    class Totalizador {
+        <<abstract>>
+        +calcular(transacoes)
+    }
+    class TotalizadorGastos {
+        +estrategia
+        +calcular(transacoes)
+    }
+    class TotalizadorOrdenado {
+        +totalizador
+        +por_valor
+        +reverso
+        +calcular(transacoes)
+    }
+    Totalizador <|-- TotalizadorGastos
+    Totalizador <|-- TotalizadorOrdenado
+    TotalizadorOrdenado --> Totalizador
+```
+
+- **Strategy** (`EstrategiaAgrupamento`): evita repetir o laço de soma entre `gastos_por_categoria` e `gastos_por_mes`. Cada regra de agrupamento (`AgrupamentoPorCategoria`, `AgrupamentoPorMes`) fica isolada em uma classe.
+- **Decorator** (`TotalizadorOrdenado`): ordena os resultados (meses em ordem crescente e categorias do maior gasto para o menor) envolvendo um `Totalizador`, sem complicar `TotalizadorGastos`.
+
 ## Refatoração na História 3 (Sprint 4)
 A função verificar_limites fazia tudo sozinha: validava os limites, montava o alerta e ordenava. A refatoração foi por extração de funções, sem mudar o comportamento, e os testes continuaram passando. Nenhum padrão de projeto foi aplicado nesta história.
 
