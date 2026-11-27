@@ -186,15 +186,30 @@ def gastos_por_mes(transacoes):
     calc = TotalizadorOrdenado(TotalizadorGastos(AgrupamentoPorMes()))
     return calc.calcular(transacoes)
 
-def verificar_limites(total, limites):
-    alertas = []
-
+def validar_limites(limites):
     for categoria in limites:
         if limites[categoria] < 0:
             raise ValueError("Limite negativo não é permitido")
 
-    for categoria in total:
-        gasto = total[categoria]
+def criar_alerta(categoria, gasto, limite):
+    return {
+        "categoria": categoria,
+        "gasto": gasto,
+        "limite": limite,
+        "excedente": gasto - limite,
+    }
+
+def pegar_excedente(alerta):
+    return alerta["excedente"]
+
+
+def verificar_limites(totais_por_categoria, limites):
+    validar_limites(limites)
+
+    alertas = []
+
+    for categoria in totais_por_categoria:
+        gasto = totais_por_categoria[categoria]
 
         if categoria not in limites:
             continue
@@ -202,13 +217,8 @@ def verificar_limites(total, limites):
         limite = limites[categoria]
 
         if gasto > limite:
-            alerta = {
-                "categoria": categoria,"gasto": gasto,"limite": limite, "excedente" : gasto - limite,
-            }
-            alertas.append(alerta)
-    alertas.sort(key= pegar_excedente, reverse=True)
+            alertas.append(criar_alerta(categoria, gasto, limite))
+
+    alertas.sort(key=pegar_excedente, reverse=True)
 
     return alertas
-
-def pegar_excedente(alerta):
-    return alerta["excedente"]
